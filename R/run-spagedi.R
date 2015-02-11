@@ -9,7 +9,7 @@ runSpagedi <- function(data_input, output_name){
     paste('"',
           input,"\n", 
         output, "\n", 
-        ifelse(file.exists(output), "e\n", ""), # If file already exists, overwrite
+        ifelse(file.exists(paste("./out/", output, sep = "")), "e\n", ""), # If file already exists, overwrite
         "\n", # Basic information menu
         "1\n", # Choose individuals analysis
         "1\n", # Choose Loiselle kinship coefficient

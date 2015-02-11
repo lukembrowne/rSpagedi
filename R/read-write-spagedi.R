@@ -1,6 +1,7 @@
 
+
 ## Write a genalex dataframe to spagedi format
-writeSpagedi <- function(df, file_name = "spagedi_format_out.txt", num_dist_int = -5){
+writeSpagedi <- function(df, file_name, num_dist_int = -5){
 
 sink(paste("./out/", file_name, sep = ""))
   # Begin first line
@@ -33,25 +34,42 @@ sink() # End header
                          UTM2 = attr(df, "extra.columns")$UTM2)
 
   ## Convert Ob03 to three alleles to be consistent across loci
-  for(i in 1:nrow(df)){ # Could probably vectorize to make faster
-    if(nchar(df[i, "Ob03"]) == 2){
+  for(i in 1:nrow(df))
+    { # Could probably vectorize to make faster
+    if(nchar(df[i, "Ob03"]) == 2)
+      {
       df[i, "Ob03"] <- paste("0", df[i, "Ob03"], sep = "")
-    }
-    if(nchar(df[i, "Ob03.2"]) == 2){
-      df[i, "Ob03.2"] <- paste("0", df[i, "Ob03.2"], sep = "")
-  }}
+      }
+    
+    if(attr(df, "ploidy") == 2)
+      { 
+      if(nchar(df[i, "Ob03.2"]) == 2)
+        {
+        df[i, "Ob03.2"] <- paste("0", df[i, "Ob03.2"], sep = "")
+        }
+      }
+    } # End for loop
 
   ## Need to paste together allele calls
 
-  df_collapsed <- data.frame(matrix(nrow = attr(df, "n.samples"), ncol = 11))
+  df_collapsed <- data.frame(matrix(nrow = attr(df, "n.samples"),
+                                    ncol = attr(df, "n.loci")))
   colnames(df_collapsed) <- attr(df, "locus.names")
   
-  y <- 3 # Loops through data on dataframe
-  for(j in 1:attr(df, "n.loci")){
-    
-    df_collapsed[, j] <- paste0(df[, y], df[, y + 1])
-     y <- y + 2    
-  }
+  if(attr(df, "ploidy") == 2)
+  {
+    y <- 3 # Loops through data on dataframe
+    for(j in 1:attr(df, "n.loci"))
+    {    
+      df_collapsed[, j] <- paste0(df[, y], df[, y + 1])
+       y <- y + 2    
+    }
+  } else {
+    for(j in 1:attr(df, "n.loci"))
+    {
+      df_collapsed[, j] <- df[, j + 2]
+    }
+  }    
 
   out <- cbind(df_to_write, df_collapsed)
 
@@ -74,15 +92,15 @@ readSpagediTable <- function(path_to_out, type){
                   out_lines) + 3}
   
   if(type == "kin"){
-    start <- grep("Genetic analyses at INDIVIDUAL level \\(175 individuals\\)",
+    start <- grep("Genetic analyses at INDIVIDUAL level",
                   out_lines) + 10}
   
   if(type == "dist"){
-    start <- grep("Genetic analyses at INDIVIDUAL level \\(175 individuals\\)",
+    start <- grep("Genetic analyses at INDIVIDUAL level",
                   out_lines) + 1}
   
   # Find the last line of the table by looking for the next blank line
-  end = min(which(out_lines[start:length(out_lines)] == "")) + start -2
+  end = min(which(out_lines[start:length(out_lines)] == "")) + start - 2
   
   raw <- out_lines[start:end] 
   

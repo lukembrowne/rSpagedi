@@ -26,11 +26,12 @@ updateAttributes <- function(df){
   new_pop_sizes <- as.numeric( table(df$Plot))
   names(new_pop_sizes) <- levels(df$Plot)
   attr(df, "pop.sizes") <- new_pop_sizes
-  
-  # Need to update ploidy
-  # Need to update locus.columns
-  
-  
+      # Update ploidy by counting # of columns after first two columns
+  if(ncol(df) == (attr(df, "n.loci") + 2)) {
+    attr(df, "ploidy") <- 1
+    attr(df, "locus.columns") <- 3:ncol(df)
+  }
+
   return(df)
 }
 
@@ -80,7 +81,7 @@ groupPopsGenalex <- function(df){
 ## Separating maternal and paternal genotypes
 
 
-separateMatPat <- function(genalex_df)
+separateMatPat <- function(genalex_df){
 
 
     # Subset into 2 genalex DF based on tissue type
@@ -109,7 +110,10 @@ separateMatPat <- function(genalex_df)
         if(sum(!(leaf_gen %in% seed_gen)) == 2){
           mat[i, j] <- 0 # Set to missing data
           pat[i, j] <- 0 # Set to missing data
-          warning("Leaf and seed genotype mismatch!! or missing data!")
+          if(0 %in% c(leaf_gen, seed_gen)) {warning("Missing Data!")
+          } else{
+          warning("Leaf and seed genotype mismatch!!")
+          }
           next() # Jump to next individual if there's a mismatch
         }
         
@@ -157,9 +161,9 @@ separateMatPat <- function(genalex_df)
   mat_out <- updateAttributes(mat_out)
   pat_out <- updateAttributes(pat_out)
 
-return(list(mat = mat, pat = pat))
+return(list(mat = mat_out, pat = pat_out))
 
-
+}
 
 
 

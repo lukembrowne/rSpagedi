@@ -26,6 +26,11 @@ updateAttributes <- function(df){
   new_pop_sizes <- as.numeric( table(df$Plot))
   names(new_pop_sizes) <- levels(df$Plot)
   attr(df, "pop.sizes") <- new_pop_sizes
+  
+  # Need to update ploidy
+  # Need to update locus.columns
+  
+  
   return(df)
 }
 
@@ -60,7 +65,6 @@ subsetGenalexPop <- function(df, pop){
 }
 
 # Group populations
-
 groupPopsGenalex <- function(df){
   
   df$Plot <- as.character(df$Plot)
@@ -70,6 +74,94 @@ groupPopsGenalex <- function(df){
   df$Plot<- factor(df$Plot)  
   return(df)
 }
+
+
+
+## Separating maternal and paternal genotypes
+
+
+separateMatPat <- function(genalex_df)
+
+
+    # Subset into 2 genalex DF based on tissue type
+    seed <- subsetGenalexExtraCol(df = genalex_df, col_name = "Tissue",
+                                          value = "Seed")
+    leaf <- subsetGenalexExtraCol(df = genalex_df, col_name = "Tissue",
+                                          value = "Leaf")
+    # initialize new dataframes that will hold paternal and maternal genotypes
+    mat <- seed
+    pat <- leaf
+
+    # Require that field numbers align perfectly
+    if(any(seed$Field_number != leaf$Field_number)) {
+      stop("Field numbers don't match up between leaf and seed samples!")}
+  
+    # Loop through genotypes, choosing which alleles are paternal or maternal
+    for(i in 1:nrow(seed)){ # Rows
+      
+      for(j in seq(3, ncol(seed), by = 2)){ # Every two columns
+        
+          # Save genotypes for each seed and leaf
+        seed_gen <- seed[i, c(j, j + 1)]
+        leaf_gen <- leaf[i, c(j, j + 1)]
+        
+          # If no genotypes match or there is missing data
+        if(sum(!(leaf_gen %in% seed_gen)) == 2){
+          mat[i, j] <- 0 # Set to missing data
+          pat[i, j] <- 0 # Set to missing data
+          warning("Leaf and seed genotype mismatch!! or missing data!")
+          next() # Jump to next individual if there's a mismatch
+        }
+        
+        # If both alleles match - aka both homozygotes     
+        if((sum(leaf_gen %in% seed_gen) == 2) & (sum(seed_gen %in% leaf_gen) == 2)){
+          #print("both homozygotes")
+          mat[i, j] <- leaf_gen[1]
+          pat[i, j] <- leaf_gen[1]
+          next()
+        }
+         
+        # If one allele in seed matches 2 in leaf
+        if((sum(leaf_gen %in% seed_gen) == 2) & (sum(seed_gen %in% leaf_gen) == 1)){
+          #print('leaf homozygous, seed not')
+          mat[i, j] <- leaf_gen[seed_gen %in% leaf_gen] # Switch order
+          pat[i, j] <- leaf_gen[1] # Doesn't matter - just take either allele
+        next()
+        }
+        
+          # If there is one allele that matches
+        if((sum(leaf_gen %in% seed_gen) == 1) & (sum(seed_gen %in% leaf_gen) == 1)){
+         #print("one allele match")
+         mat[i, j] <- leaf_gen[leaf_gen %in% seed_gen]
+         pat[i, j] <- leaf_gen[!(leaf_gen %in% seed_gen)]
+         next()
+        } 
+      } # j   
+    } # i
+
+  # Clean up maternal and paternal dataframes, taking out extra columns
+  mat_out <- mat[, c(1,2, seq(3, ncol(seed), by = 2))]
+  pat_out <- pat[, c(1,2, seq(3, ncol(seed), by = 2))]
+
+  # Copy over attributes
+  mat_names <- names(mat_out) # Could probably only use one line here
+  pat_names <- names(pat_out)
+
+  attributes(mat_out) <- attributes(mat)[-1] # Don't include names attr
+  attributes(pat_out) <- attributes(pat)[-1] # Don't include names attr
+
+  names(mat_out) <- mat_names
+  names(pat_out) <- pat_names
+
+  # Update attributes
+  mat_out <- updateAttributes(mat_out)
+  pat_out <- updateAttributes(pat_out)
+
+return(list(mat = mat, pat = pat))
+
+
+
+
 
 
 

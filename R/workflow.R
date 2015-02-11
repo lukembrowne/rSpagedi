@@ -8,7 +8,8 @@ source("./R/run-spagedi.R")
 data <- readGenalex("./data/Genalex seedlings all 2 Feb 2015.txt")
 data <- groupPopsGenalex(data)
 
-beneath <- subsetGenalexPop(df = data, pop = "Lek")
+beneath <- subsetGenalexPop(df = data, pop = "Beneath")
+lek <- subsetGenalexPop(df = data, pop = "Lek")
 beneath_seed <- subsetGenalexExtraCol(df = beneath, col_name = "Tissue",
                                       value = "Seed")
 beneath_leaf <- subsetGenalexExtraCol(df = beneath, col_name = "Tissue",
@@ -26,15 +27,16 @@ leaf <- makeSpagediList("./out/leaf.txt")
 plotAutoCor(seed)
 plotAutoCor(leaf)
 
+## Need to update ploidy and such in Update attributes
 
-## Write function to run Spagedi through terminal in R for basic SGS analysis
+## Need to modify writeSpagedi to take ploidy = 1 for maternal / paternal DF
 
 ## Need to make distance intervals custom in writeSpagedi
-
-## Write function that pulls apart maternal and paternal genotypes
 
 ## General debugging, adding in unit and error checking throughout functions
 
 ## Code to calculate Sp statistic
 
 ## Get rid of intergroup clumping
+
+## Add option to set number of permutations, make options more complex

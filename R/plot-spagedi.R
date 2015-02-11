@@ -21,3 +21,4 @@ plotAutoCor <- function(spagediList){
   
   
 }
+

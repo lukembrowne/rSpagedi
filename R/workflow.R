@@ -15,6 +15,24 @@ beneath_seed <- subsetGenalexExtraCol(df = beneath, col_name = "Tissue",
 beneath_leaf <- subsetGenalexExtraCol(df = beneath, col_name = "Tissue",
                                       value = "Leaf")
 
+## Separating maternal and paternal
+mat <- separateMatPat(beneath)$mat
+pat <- separateMatPat(beneath)$pat
+writeSpagedi(mat, "mat.txt")
+writeSpagedi(pat, "pat.txt")
+runSpagedi(data_input = "mat.txt", output_name = "mat_out.txt")
+runSpagedi(data_input = "pat.txt", output_name = "pat_out.txt")
+
+mat_out <- makeSpagediList("./out/mat_out.txt")
+pat_out <- makeSpagediList("./out/pat_out.txt")
+
+plotAutoCor(mat_out)
+plotAutoCor(pat_out)
+calcSp(mat_out)
+calcSp(pat_out)
+
+
+
 writeSpagedi(df = beneath_seed, file_name = "beneath_seed.txt", num_dist_int = -5)
 writeSpagedi(df = beneath_leaf, file_name = "beneath_leaf.txt", num_dist_int = -5)
 
@@ -24,12 +42,7 @@ runSpagedi(data_input = "beneath_seed.txt", output_name = "seed.txt")
 seed <- makeSpagediList("./out/seed.txt")
 leaf <- makeSpagediList("./out/leaf.txt")
 
-plotAutoCor(seed)
-plotAutoCor(leaf)
 
-## Need to update ploidy and such in Update attributes
-
-## Need to modify writeSpagedi to take ploidy = 1 for maternal / paternal DF
 
 ## Need to make distance intervals custom in writeSpagedi
 

@@ -166,6 +166,14 @@ return(list(mat = mat_out, pat = pat_out))
 }
 
 
+## Calculate sp statistic
+
+calcSp <- function(SpagediList){
+  kin <- SpagediList$kin
+  all_loci <- (- kin[1, "b-log(slope log dist)"]) / (1 - kin[1, 2])
+  return(all_loci) 
+}
+
 
 
 

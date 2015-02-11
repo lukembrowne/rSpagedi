@@ -1,4 +1,21 @@
 
+
+
+### Make a 'Spagedi' list that holds all the information we want to do analyses on
+
+makeSpagediList <- function(path_to_out){
+  
+  ## Need to save kin, perm, and dist to a list / DF
+  list <- list(perm = readSpagediTable(path_to_out, "perm"), 
+               dist = readSpagediTable(path_to_out, "dist"),
+               kin = readSpagediTable(path_to_out, "kin"))
+  
+  return(list)
+  
+}
+
+
+
 ### Update attributes of a GenAlex dataframe
 
 updateAttributes <- function(df){
@@ -14,17 +31,17 @@ updateAttributes <- function(df){
 
 ## Subset based on info in extra columns
 subsetGenalexExtraCol <- function(df, col_name, value){
-
-      # Get row indices of subset
-    sub_ind <- which(attr(df, "extra.columns")[col_name] == value)
-    
-      # Create new dataframe that carries over attributes
-    new_df <- df[sub_ind, ]
-    attr(new_df, "extra.columns") <- attr(df, "extra.columns")[sub_ind, ]
-    
-    new_df <- updateAttributes(new_df)
-    return(new_df)
-
+  
+  # Get row indices of subset
+  sub_ind <- which(attr(df, "extra.columns")[col_name] == value)
+  
+  # Create new dataframe that carries over attributes
+  new_df <- df[sub_ind, ]
+  attr(new_df, "extra.columns") <- attr(df, "extra.columns")[sub_ind, ]
+  
+  new_df <- updateAttributes(new_df)
+  return(new_df)
+  
 }
 
 # Subset based on pop

@@ -1,4 +1,5 @@
 
+## Write a genalex dataframe to spagedi format
 writeSpagedi <- function(df, file_name = "spagedi_format_out.txt", num_dist_int = -5){
 
 sink(paste("./out/", file_name, sep = ""))
@@ -59,6 +60,64 @@ sink() # End header
   
   cat("END", file = paste("./out/", file_name, sep = ""), append = TRUE )
 }
+
+
+
+
+## Read data summaries from text output of Spagedi
+readSpagediTable <- function(path_to_out, type){
+  # Type can be dist, perm, or kin
+  out_lines <- readLines(path_to_out)
+  
+  if(type == "perm"){
+    start <- grep("LOCATIONS, INDIVIDUALS and/or GENES PERMUTATION TESTS",
+                  out_lines) + 3}
+  
+  if(type == "kin"){
+    start <- grep("Genetic analyses at INDIVIDUAL level \\(175 individuals\\)",
+                  out_lines) + 10}
+  
+  if(type == "dist"){
+    start <- grep("Genetic analyses at INDIVIDUAL level \\(175 individuals\\)",
+                  out_lines) + 1}
+  
+  # Find the last line of the table by looking for the next blank line
+  end = min(which(out_lines[start:length(out_lines)] == "")) + start -2
+  
+  raw <- out_lines[start:end] 
+  
+  split <- strsplit(raw, split = "\t")
+  
+  maxcol <- max(sapply(split, length))
+  
+  tab <- data.frame(matrix(ncol = maxcol - 1, nrow = length(raw)))
+  row.names(tab) <- sapply(split, "[[", 1)
+  
+  if(type == "dist"){labels  <- 1}
+  if(type == "perm"){labels  <-  2}
+  if(type == "kin"){labels <- 1}
+  names(tab) <- split[[labels]][-1]
+  
+  # Pick out list elements to fill in with empty data to reach 12 columns
+  fill_in <- which(sapply(split, length) < maxcol)
+  
+  for(x in fill_in){
+    split[[x]][!(1:length(split[[2]]) %in% 1:length(split[[x]]))] <- NA
+  }
+  
+  # Fill in columns with actual data
+  for(j in 1:ncol(tab)){
+    tab[, j] <- as.numeric(sapply(split, "[[", (j+1)))
+  }
+  
+  if(type == "kin"){tab <- tab[-1, ]}
+  if(type == "perm"){tab  <- tab[-c(1,2,3), ]}
+  if(type == "dist"){tab <- tab[, -1]}
+  
+  return(tab)
+}
+
+
 
 
 

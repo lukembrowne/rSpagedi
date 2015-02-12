@@ -1,31 +1,35 @@
 
 
 ## Write a genalex dataframe to spagedi format
-writeSpagedi <- function(df, file_name, num_dist_int = -5){
+writeSpagedi <- function(df, file_name, dist_int){
 
-sink(paste("./out/", file_name, sep = ""))
-  # Begin first line
-cat(attr(df, "n.samples"),     # First - number of samples
-    attr(df, "n.pops"),        # Number of category / populations
-    2,                         # Number of spatial dimensions
-    attr(df, "n.loci"),        # Number of loci
-    3,                         # Number of digits to code alleles
-    attr(df, "ploidy"),        # Ploidy
-    "\n",
-    sep = "\t")        # End first line
-
-  # Begin second line - Distance intervals
-cat(num_dist_int, "\n")
-
-  # Begin third line
-cat("Field_number",            # Individual ID
-    "Plot",                    # Category
-    "UTM1",                    # X coord
-    "UTM2",                    # Y coord
-    attr(df, "locus.names"),
-    "\n",
-    sep = "\t")       # End third line
-sink() # End header
+  sink(paste("./out/", file_name, sep = ""))
+    # Begin first line
+  cat(attr(df, "n.samples"),     # First - number of samples
+      attr(df, "n.pops"),        # Number of category / populations
+      2,                         # Number of spatial dimensions
+      attr(df, "n.loci"),        # Number of loci
+      3,                         # Number of digits to code alleles
+      attr(df, "ploidy"),        # Ploidy
+      "\n",
+      sep = "\t")        # End first line
+  
+    # Begin second line - Distance intervals
+  if(any(dist_int < 0)) cat(dist_int, "\n") # If negative, just put single number
+  if(any(dist_int > 0))
+    {
+    cat(length(dist_int), dist_int, "\n", sep = "\t")
+    }
+  
+    # Begin third line
+  cat("Field_number",            # Individual ID
+      "Plot",                    # Category
+      "UTM1",                    # X coord
+      "UTM2",                    # Y coord
+      attr(df, "locus.names"),
+      "\n",
+      sep = "\t")       # End third line
+  sink() # End header
 
   # Begin fourth line - DATA!
   df_to_write <- data.frame(Field_number = attr(df, "extra.columns")$Field_number,

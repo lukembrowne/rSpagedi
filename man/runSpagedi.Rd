@@ -7,18 +7,17 @@
 runSpagedi(input_name, output_name, perm = 999)
 }
 \arguments{
-\item{input_name}{Name of SPAGeDi formatted input data file. Must be in
-working directory. String.}
+\item{input_name}{\(string\) - Name of SPAGeDi formatted input data file. Must be in
+working directory.}
 
-\item{output_name}{Name of output file. Will overwrite if file already exists,
-or create new file if it doesn't. String}
+\item{output_name}{\(string\) - Name of output file. Will overwrite if file
+already exists, or create new file if it doesn't}
 
 \item{perm}{Number of permutations. Default is 999}
 }
 \value{
-Does not return anything directly, but prints results of analysis to
- a tab-delimited text file at \code{output_name}. See \code{\link{readSpagediTable}}
- for how to parse this output.
+Does not return anything directly, but writes results of analysis to
+ a tab-delimited text file at \code{output_name}.
 }
 \description{
 Calls SPAGeDi executable via system() function
@@ -28,8 +27,5 @@ SPAGeDi must be installed on your system, and able to be run from the
  Shell/Terminal. Function is currently configured to run a basic spatial
  autocorrelation analysis between individuals using the kinship coefficient
  of Loiselle et al. 1995, testing for significance, and jacknifing over loci.
-}
-\examples{
-TODO
 }
 

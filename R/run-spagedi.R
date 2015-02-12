@@ -14,11 +14,8 @@
 #' @param perm Number of permutations. Default is 999
 #' 
 #' @return Does not return anything directly, but writes results of analysis to
-#'  a tab-delimited text file at \code{output_name}. See \code{\link{readSpagediTable}}
-#'  for how to parse this output.
+#'  a tab-delimited text file at \code{output_name}. 
 #'
-#' @examples
-#' TODO
 #'
 runSpagedi <- function(input_name, output_name, perm = 999){
   

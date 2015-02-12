@@ -1,9 +1,9 @@
 
 
 ## Write a genalex dataframe to spagedi format
-writeSpagedi <- function(df, file_name, dist_int){
+writeSpagediGenAlex <- function(df, file_name, dist_int){
 
-  sink(paste("./out/", file_name, sep = ""))
+  sink(file_name)
     # Begin first line
   cat(attr(df, "n.samples"),     # First - number of samples
       attr(df, "n.pops"),        # Number of category / populations
@@ -77,10 +77,10 @@ writeSpagedi <- function(df, file_name, dist_int){
 
   out <- cbind(df_to_write, df_collapsed)
 
-  write.table(out, paste("./out/", file_name, sep = ""), append = TRUE, 
+  write.table(out, file_name, append = TRUE, 
               col.names = FALSE, quote = FALSE, sep = "\t", row.names = FALSE)
   
-  cat("END", file = paste("./out/", file_name, sep = ""), append = TRUE )
+  cat("END", file = file_name, append = TRUE )
 }
 
 

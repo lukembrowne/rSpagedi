@@ -14,7 +14,8 @@ plotAutoCor <- function(spagediList){
   
   plot(max_dist, obs, type = "b", pch = 19, las = 1, 
        ylab = "Kinship", xlab = "Distance (m)", lwd = 2,
-       ylim = c(min(obs, conf_low) * 1.1, max(obs, conf_hi) * 1.1))
+       ylim = c(min(obs, conf_low, na.rm = TRUE) * 1.1, 
+                max(obs, conf_hi, na.rm = TRUE) * 1.1))
   abline(h = 0, lty = 1, col = "grey50")
   lines(max_dist, conf_hi, lty = 4)
   lines(max_dist, conf_low, lty = 4)

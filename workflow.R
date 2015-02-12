@@ -1,9 +1,5 @@
 library(readGenalex)
 
-source("./R/data-handling.R")
-source("./R/read-write-spagedi.R")
-source("./R/plot-spagedi.R")
-source("./R/run-spagedi.R")
 
 data <- readGenalex("./data/Genalex seedlings all 2 Feb 2015.txt")
 data <- groupPopsGenalex(data)

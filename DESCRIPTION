@@ -1,5 +1,7 @@
-Package: sgsR
-Title: Analysis of Fine-scale Spatial Genetic Structure
+Package: rSpagedi
+Title: An R wrapper for analysis of fine-scale spatial genetic structure in SPAGeDi
+  (Hardy & Vekemens 2002), with functions for plotting autocorrelograms, parsing
+  SPAGeDi output, and writing data in SPAGeDi format.
 Version: 0.0.0.9000
 Authors@R: person("Luke", "Browne", role = c("aut", "cre"), email = "lukembrowne@gmail.com")
 Description: An R package for the analysis of fine-scale spatial genetic structure data.
@@ -8,3 +10,5 @@ Depends: R (>= 3.0.3)
 License: GPL (>= 2)
 LazyData: true
 VignetteBuilder: knitr
+Imports: 
+Suggests: testthat

@@ -12,7 +12,12 @@ plotAutoCor <- function(spagediList){
   conf_low <- as.numeric(perm["95%CI-inf", ])
   max_dist <- as.numeric(dist["Max distance", ])
   
-  plot(max_dist, obs, type = "b", pch = 19, las = 1, 
+    # Closed symbol if permutation was significant
+  sig <- apply(perm[c(8,9,10), ], 2, FUN = function(x) {any(x < 0.05)})
+  symbols <- rep(1, ncol(perm))
+  symbols[sig] <- 19
+  
+  plot(max_dist, obs, type = "b", pch = symbols, las = 1, 
        ylab = "Kinship", xlab = "Distance (m)", lwd = 2,
        ylim = c(min(obs, conf_low, na.rm = TRUE) * 1.1, 
                 max(obs, conf_hi, na.rm = TRUE) * 1.1))

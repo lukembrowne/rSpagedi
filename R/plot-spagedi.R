@@ -1,6 +1,7 @@
 ### Make a spatial autocorrelation plot with spagedi output
 
-plotAutoCor <- function(spagediList){
+plotAutoCor <- function(spagediList, overlay = FALSE, color = "black"){
+
   
   perm <- spagediList$perm
   dist <- spagediList$dist
@@ -17,14 +18,23 @@ plotAutoCor <- function(spagediList){
   symbols <- rep(1, ncol(perm))
   symbols[sig] <- 19
   
+  if(overlay){
+    par(new = TRUE)
+    points(max_dist, obs, type = "b", pch = symbols, xlab = "", ylab = "",
+           yaxt = "n", xaxt = "n", col = color, lwd = 2, lty = 1)
+    lines(max_dist, conf_hi, lty = 4, col = color)
+    lines(max_dist, conf_low, lty = 4, col = color)
+    
+  } else{
+  
   plot(max_dist, obs, type = "b", pch = symbols, las = 1, 
        ylab = "Kinship", xlab = "Distance (m)", lwd = 2,
        ylim = c(min(obs, conf_low, na.rm = TRUE) * 1.1, 
-                max(obs, conf_hi, na.rm = TRUE) * 1.1))
+                max(obs, conf_hi, na.rm = TRUE) * 1.1), col = color)
   abline(h = 0, lty = 1, col = "grey50")
-  lines(max_dist, conf_hi, lty = 4)
-  lines(max_dist, conf_low, lty = 4)
-  
+  lines(max_dist, conf_hi, lty = 4, col = color)
+  lines(max_dist, conf_low, lty = 4, col = color)
+  }
   
 }
 

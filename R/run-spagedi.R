@@ -16,7 +16,7 @@ runSpagedi <- function(data_input, output_name, perm = 999){
         "\n", # Basic information menu
         "1\n", # Choose individuals analysis
         "1\n", # Choose Loiselle kinship coefficient
-        "3\n", # Make permutation tests
+        "34\n", # Make permutation tests and jacknife over loci
         "\n", # Permutation options
         perm, "\n", # Number of permutations 
         "\n", # Output options

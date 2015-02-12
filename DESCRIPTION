@@ -12,3 +12,5 @@ LazyData: true
 VignetteBuilder: knitr
 Imports: 
 Suggests: testthat
+URL: https://github.com/lukembrowne/rSpagedi
+BugReports: https://github.com/lukembrowne/rSpagedi/issues

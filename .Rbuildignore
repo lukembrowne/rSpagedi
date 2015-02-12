@@ -1,2 +1,5 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^workflow\.R$
+^README\.Rmd$
+^README-*\.png$

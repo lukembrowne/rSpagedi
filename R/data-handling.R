@@ -62,7 +62,7 @@ extractDivParam <- function(spagediList, param){
 
 # Format diversity table into a data frame better formatted for data analysis
 # Have to pass all the spagediLists as a list, and also names of groups
-formatDiv <- function(out_as_list, group_names, param){ 
+formatDiv <- function(out_as_list, group_names, param, average = FALSE){ 
      
     # Number of groups
     num_groups <- length(out_as_list)
@@ -78,7 +78,11 @@ formatDiv <- function(out_as_list, group_names, param){
     row_names <- row.names(div_df)
     
     # Get rid of extra first column made my initializing df and using cbind
-    div_df <- div_df[, -1]
+    if(average){ # Only report average across loci
+      div_df <- div_df[1, -1]
+    } else{    # Remove average and only report by loci
+      div_df <- div_df[-1, -1]
+    }
     
     # If it's just one group, output as a named vector
     if(is.numeric(div_df)) names(div_df) <- row_names

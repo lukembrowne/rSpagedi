@@ -8,7 +8,8 @@ makeSpagediList <- function(path_to_out){
   ## Need to save kin, perm, and dist to a list / DF
   list <- list(perm = readSpagediTable(path_to_out, "perm"), 
                dist = readSpagediTable(path_to_out, "dist"),
-               kin = readSpagediTable(path_to_out, "kin"))
+               kin = readSpagediTable(path_to_out, "kin"),
+               diversity = readSpagediTable(path_to_out, "diversity"))
   
   return(list)
   

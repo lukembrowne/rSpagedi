@@ -12,12 +12,15 @@
 #' @param output_name \(string\) - Name of output file. Will overwrite if file 
 #'  already exists, or create new file if it doesn't
 #' @param perm Number of permutations. Default is 999
+#' @param rest_reg \(TRUE/FALSE\) - Use restricted distance for calculating regression
+#' @param max_regr_dist \(numeric)\ - Maximum distance to use for restricted regression, only used if \code{rest_reg} is set to \code{TRUE}
 #' 
 #' @return Does not return anything directly, but writes results of analysis to
 #'  a tab-delimited text file at \code{output_name}. 
 #'
 #'
-runSpagedi <- function(input_name, output_name, perm = 999){
+runSpagedi <- function(input_name, output_name, perm = 999, 
+                       rest_reg = FALSE, max_regr_dist = 160){
   
   if(perm < 40 | perm > 20000){ 
     stop("Number of permutations must be between 40 and 20000 ")}
@@ -31,10 +34,12 @@ runSpagedi <- function(input_name, output_name, perm = 999){
         "\n", # Basic information menu
         "1\n", # Choose individuals analysis
         "1\n", # Choose Loiselle kinship coefficient
-        "34\n", # Make permutation tests and jacknife over loci
+        # Make permutation tests and jacknife over loci
+        ifelse(rest_reg, paste("234\n0\n", max_regr_dist, "\n", sep = ""), "34\n"), 
         "\n", # Permutation options
         perm, "\n", # Number of permutations 
         "\n", # Output options
+        #"6\n1\n\n", # Estimate gene dispersal sigma and effective pop density
         '"',
       
         sep = "")
@@ -43,3 +48,5 @@ runSpagedi <- function(input_name, output_name, perm = 999){
   
   system(command)
 }
+
+

@@ -2,7 +2,6 @@
 
 
 ### Make a 'Spagedi' list that holds all the information we want to do analyses on
-
 makeSpagediList <- function(path_to_out){
   
   ## Need to save kin, perm, and dist to a list / DF
@@ -17,14 +16,13 @@ makeSpagediList <- function(path_to_out){
 
 
 ## Calculate sp statistic
-
 calcSp <- function(kin, row_name){
   return( ( - kin[row_name, "b-log(slope log dist)"]) / (1 - kin[row_name, 2]) )
 }
 
 
 
-# Calculate summary of Sp statistics
+# Calculate summary of Sp statistics - returns vector of sp by loci
 SpSummary <- function(SpagediList){
   kin <- SpagediList$kin
   mean <- calcSp(kin, "ALL LOCI")
@@ -44,6 +42,50 @@ SpSummary <- function(SpagediList){
 
 
 
+extractDivParam <- function(spagediList, param){
+  
+  if(!is.character(param)) stop("Param argument must be character")
+  
+  if(param == "he") param <- "He (gene diversity corrected for sample size, Nei 1978)"
+  if(param == "nae") param <- "NAe: Effective # alleles (Nielsen et al. 2003)"
+ 
+  if(param == "ar"){
+    ar_vec <- spagediList[['diversity']][, grep("AR", 
+                                                names(spagediList[['diversity']]))]
+    names(ar_vec) <- row.names(spagediList[['diversity']])
+    return(ar_vec)
+  }
+  
+  return(spagediList[['diversity']][param])
+}
+
+
+# Format diversity table into a data frame better formatted for data analysis
+# Have to pass all the spagediLists as a list, and also names of groups
+formatDiv <- function(out_as_list, group_names, param){ 
+     
+    # Number of groups
+    num_groups <- length(out_as_list)
+    
+    # Data frame with columns as group names with values for diversity parameter
+    div_df <- data.frame(NA)
+    for(x in 1:num_groups){
+      div_df <- cbind(div_df, extractDivParam(out_as_list[[x]], param))
+    }
+    
+    # Clean up column names
+    names(div_df) <- c("blank", group_names)
+    row_names <- row.names(div_df)
+    
+    # Get rid of extra first column made my initializing df and using cbind
+    div_df <- div_df[, -1]
+    
+    # If it's just one group, output as a named vector
+    if(is.numeric(div_df)) names(div_df) <- row_names
+    
+    return(div_df)
+
+}
 
 
 

@@ -20,7 +20,8 @@
 #'
 #'
 runSpagedi <- function(input_name, output_name, perm = 999, 
-                       rest_reg = FALSE, max_regr_dist = 160){
+                       rest_reg = FALSE, max_regr_dist = 160,
+                       ar = FALSE, min_ar = 140){
   
   if(perm < 40 | perm > 20000){ 
     stop("Number of permutations must be between 40 and 20000 ")}
@@ -38,7 +39,7 @@ runSpagedi <- function(input_name, output_name, perm = 999,
         ifelse(rest_reg, paste("234\n0\n", max_regr_dist, "\n", sep = ""), "34\n"), 
         "\n", # Permutation options
         perm, "\n", # Number of permutations 
-        "\n", # Output options
+        ifelse(ar, paste("2\n", min_ar, "\n", sep = ""), "\n"), # Output options
         #"6\n1\n\n", # Estimate gene dispersal sigma and effective pop density
         '"',
       

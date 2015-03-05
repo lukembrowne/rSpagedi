@@ -3,3 +3,5 @@
 ^workflow\.R$
 ^README\.Rmd$
 ^README-*\.png$
+TODO.txt
+./playground.R

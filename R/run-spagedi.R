@@ -19,11 +19,12 @@
 #'  a tab-delimited text file at \code{output_name}. 
 #'
 #'
-runSpagedi <- function(input_name, output_name, perm = 999, 
+runSpagedi <- function(input_name, output_name, categories_present = TRUE, 
+                       perm = FALSE, n_perm = 999,
                        rest_reg = FALSE, max_regr_dist = 160,
                        ar = FALSE, min_ar = 140){
   
-  if(perm < 40 | perm > 20000){ 
+  if(n_perm < 40 | n_perm > 20000){ 
     stop("Number of permutations must be between 40 and 20000 ")}
   
   options <- 
@@ -33,12 +34,19 @@ runSpagedi <- function(input_name, output_name, perm = 999,
         # If file already exists, overwrite
         ifelse(file.exists(output_name), "e\n", ""), 
         "\n", # Basic information menu
-        "1\n", # Choose individuals analysis
+        ifelse(categories_present, "1\n", ""), # Choose individuals analysis
         "1\n", # Choose Loiselle kinship coefficient
         # Make permutation tests and jacknife over loci
-        ifelse(rest_reg, paste("234\n0\n", max_regr_dist, "\n", sep = ""), "34\n"), 
-        "\n", # Permutation options
-        perm, "\n", # Number of permutations 
+        
+        if(perm & rest_reg){
+          paste("234\n0\n", max_regr_dist, "\n\n", n_perm, "\n", sep = "")
+        } else if(perm & !rest_reg){
+          paste("34\n\n", n_perm, "\n", sep = "")
+        },
+        
+        #ifelse(rest_reg, paste("234\n0\n", max_regr_dist, "\n", sep = ""), "34\n"), 
+        #"\n", # Permutation options
+        #perm, "\n", # Number of permutations 
         ifelse(ar, paste("2\n", min_ar, "\n", sep = ""), "\n"), # Output options
         #"6\n1\n\n", # Estimate gene dispersal sigma and effective pop density
         '"',

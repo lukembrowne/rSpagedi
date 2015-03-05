@@ -89,7 +89,7 @@ writeSpagediGenAlex <- function(df, file_name, dist_int){
 ## Read data summaries from text output of Spagedi
 readSpagediTable <- function(path_to_out, type){
   # Type can be dist, perm, or kin
-  out_lines <- readLines(path_to_out)
+  out_lines <- readLines(path_to_out, warn = FALSE)
   
   if(type == "perm"){
     start <- grep("LOCATIONS, INDIVIDUALS and/or GENES PERMUTATION TESTS",
@@ -107,6 +107,10 @@ readSpagediTable <- function(path_to_out, type){
     start <- grep("GENE DIVERSITY and ALLELE FREQUENCIES",
                   out_lines) + 1}
   
+  if(length(start) == 0){
+    cat("Date of type", type, "not found in Spagedi output...\n")
+    return(NULL)
+  }
   
   # Find the last line of the table by looking for the next blank line
   end = min(which(out_lines[start:length(out_lines)] == "")) + start - 2

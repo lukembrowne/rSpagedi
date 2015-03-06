@@ -11,7 +11,11 @@ The main components of rSpagedi are:
 3.  Calculating the popular Sp statistic, which estimates the strength of FS-SGS
 4.  Creating spatial autocorrelation plots
 
-=============== rSpagedi is very much still in development, and certainly contains many bugs. If you're interested in contributing, have any comments or suggestions, please get in touch via github or email - <lukembrowne@gmail.com> ===============
+===============
+
+rSpagedi is very much still in development, and certainly contains many bugs. If you're interested in contributing, have any comments or suggestions, please get in touch via github or email - <lukembrowne@gmail.com>
+
+===============
 
 To install rSpagedi, you must first make sure the package 'devtools' is installed. This will allow you to install rSpagedi directly from github.
 
@@ -28,6 +32,7 @@ Here's an example of a typical workflow...
 
 -   use runSpagedi() to run Spagedi through R
     -   Note that SPAGeDi must be installed on your system!
+    -   It is also configured to run the kinship coefficient of Loiselle et al. 1995
 -   use makeSpagediList() to read back into R in the data file created by the Spagedi run
 -   use SpSummary() to calculate Sp statistics
 -   use plotAutoCor() to make an autorcorrelation plot
@@ -35,7 +40,6 @@ Here's an example of a typical workflow...
 ``` r
 
 library(rSpagedi)
-
 
 ## Run SPAGeDi through R console with various options for analysis
 # This reads in the SPAGeDi formatted data file located in your working directory, and
@@ -70,5 +74,15 @@ plotAutoCor(spagedi_output, max_dist = 200)
 ```
 
 ![](README-unnamed-chunk-3-1.png)
+
+``` r
+
+# You can also retrive the raw data produced by SPAGeDi like this..
+
+spagedi_output$perm # Info about permutation tests
+spagedi_output$dist # Info on distance classes
+spagedi_output$kin  # Info on kinship estimates
+spagedi_output$diversity # Info on diversity estimates
+```
 
 =================

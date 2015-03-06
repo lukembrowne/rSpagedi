@@ -30,10 +30,17 @@ SpSummary <- function(SpagediList){
   cat("\n\n")
   cat("Mean Sp across all loci       == ", mean, "\n")
   cat("-------\n")
-  cat("Mean Sp across jacknifed loci == ", mean_jck, "\n")
-  cat("-------\n")
+  
+  if(!is.na(mean_jck)){
+    cat("Mean Sp across jacknifed loci == ", mean_jck, "\n")
+    cat("-------\n")
+  }
       # Select rows that have individual loci
-  loci_rows <- (grep("ALL LOCI", row.names(kin)) + 1):(grep("Jack", row.names(kin)) - 1)
+  if(!is.na(mean_jck)){
+  loci_rows <-(grep("ALL LOCI", row.names(kin)) + 1):(grep("Jack", row.names(kin)) - 1)
+  } else{
+    loci_rows <- 2:nrow(kin)
+  }
   sp_loci <- calcSp(kin, loci_rows )
   names(sp_loci) <- row.names(kin)[loci_rows]
   cat("Sp by loci\n\n")

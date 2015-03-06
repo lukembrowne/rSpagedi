@@ -1,6 +1,6 @@
 ### rSpagedi
 
-*rSpagedi* is a package aimed at interfacing the population genetics program SPAGeDi (Spatial Pattern Analysis of Genetic Diversity) with R. The current version of rSpagedi focuses on running analyses of fine-scale spatial genetic structure (FS-SGS).
+*rSpagedi* is a package aimed at interfacing the genetics program SPAGeDi (Spatial Pattern Analysis of Genetic Diversity) with R. The current version of rSpagedi focuses on running analyses of fine-scale spatial genetic structure (FS-SGS).
 
 To find out more about SPAGeDi, please visit the [website.](http://ebe.ulb.ac.be/ebe/SPAGeDi.html)
 

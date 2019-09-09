@@ -11,9 +11,18 @@ The main components of rSpagedi are:
 3.  Calculating the popular Sp statistic, which estimates the strength of FS-SGS
 4.  Creating spatial autocorrelation plots
 
+*September 2019 update* 
+
+Over the years, I've had people reach out to me with questions about running rSpagedi on their own datasets. While I do think rSpagedi could be useful for some people, its functionality is pretty limited, and I do not foresee having the ability expand on this in the future. My current advice is that if you are looking for a way to run SPAGeDi in a programmatic way (e.g., run analyses on many datasets or across many parameter values), I would suggest looking into how to do this via the command line and Bash scripting. Here is a [short tutorial on bash scripting](https://ryanstutorials.net/bash-scripting-tutorial/bash-script.php) that may be helpful. Ultimately, this will be a much more flexible and powerful approach than using the rSPagedi package, and it is the approach that I would take if I could go back in time.
+
+The SPAGeDi manual has a short section on running it from the command line with some advice:
+
+"The program can also be launched using a command line or via another application, which can be useful to analyse numerous data sets obtained for instance by simulations. A command file that contains the keystrokes used to run an analysis can be associated to automatize the runs (e.g. “spagedi < cmds.txt” where cmds.txt is the file with the keystrokes commands). On Unix-derived systems, the program “tee” can be used to record keystrokes for playback later (e.g. “tee cmds.txt | spagedi” to record and “spagedi < cmds.txt” to repeat)."
+
+
 ===============
 
-rSpagedi is very much still in development, and certainly contains many bugs. If you're interested in contributing, have any comments or suggestions, please get in touch via github or email - <lukembrowne@gmail.com>
+rSpagedi is no longer in development, and certainly contains many bugs. If you have any questions, please get in touch via github or email - <lukembrowne@gmail.com>
 
 ===============
 

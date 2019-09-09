@@ -11,7 +11,7 @@ The main components of rSpagedi are:
 3.  Calculating the popular Sp statistic, which estimates the strength of FS-SGS
 4.  Creating spatial autocorrelation plots
 
-*September 2019 update* 
+### September 2019 update
 
 Over the years, I've had people reach out to me with questions about running rSpagedi on their own datasets. While I do think rSpagedi could be useful for some people, its functionality is pretty limited, and I do not foresee having the ability expand on this in the future. My current advice is that if you are looking for a way to run SPAGeDi in a programmatic way (e.g., run analyses on many datasets or across many parameter values), I would suggest looking into how to do this via the command line and Bash scripting. Here is a [short tutorial on bash scripting](https://ryanstutorials.net/bash-scripting-tutorial/bash-script.php) that may be helpful. Ultimately, this will be a much more flexible and powerful approach than using the rSPagedi package, and it is the approach that I would take if I could go back in time.
 
